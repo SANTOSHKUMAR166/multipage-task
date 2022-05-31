@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Details</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <form id="form2" class="root" action="javascript:void(0);" >
+        <center>
+            <h1>Education Details</h1>
+        </center>
+        <!-- HSC Information input -->
+        HSC Institution name<span class="req-star">*</span>
+        <div>
+            <input type="text" name="hsc_i_name" placeholder="" required aria-label="HSC Institution name">
+        </div>
+        <div class="input-group">
+            <div>
+                HSC Board<span class="req-star">*</span> <br>
+                <input type="text" list="board_list"  name="hsc_board" required aria-label="HSC Board">
+            </div>&nbsp;&nbsp;
+            <div>
+                HSC Score in percentage<span class="req-star">*</span> <br>
+                <input type="number" min="30" max="100" name="hsc_score"  required aria-label="HSC Marks">
+            </div>
+        </div>
+
+        <!-- SSC Information input -->
+        SSC Institution name<span class="req-star">*</span>
+        <div>
+            <input type="text" name="ssc_i_name" placeholder="" required aria-label="SSC Institution name">
+        </div>
+        <div class="input-group">
+            <div>
+                SSC Board<span class="req-star">*</span> <br>
+                <input type="text" name="ssc_board" list="board_list" required aria-label="SSC Board">
+                <datalist id="board_list">
+                    <option>CBSE</option>
+                    <option>ICSC</option>
+                    <option>State Board</option>
+                </datalist>
+            </div>&nbsp;&nbsp;
+            <div>
+                SSC Score in percentage<span class="req-star">*</span> <br>
+                <input type="number" min="30" max="100" name="ssc_score"  required aria-label="SSC Marks">
+            </div>
+        </div>
+        <!-- Current Education import -->
+        Currently pursuing course<span class="req-star">*</span>
+        <div>
+            <input type="text" name="current_course"  required aria-label="the currently pursuing course">
+        </div>
+        Current educational institution/University name<span class="req-star">*</span>
+        <div>
+            <input type="text" name="current_university" placeholder="" required aria-label="Current educational institution/University name">
+        </div>
+        <div class="input-group">
+            <div>
+                Overall percentage<span class="req-star">*</span> <br>
+                <input type="number" min="30" max="100" name="current_percentage"  required aria-label="Overall percentage">
+            </div>&nbsp;&nbsp;
+            <div>
+                Number of backlogs<span class="req-star">*</span> <br>
+                <input type="number" min="0" max="5" name="no_backlog"  required aria-label="number of backlogs">
+            </div>
+        </div>
+        <center>
+            <Button class="submitBtn" value="Next" onclick="handleSubmit(this)">Next</Button>
+        </center>
+    </form>
+    <script>
+        function handleSubmit(e) {
+            var form = document.forms['form2'];
+            var inputs = form.getElementsByTagName('input')
+            for (var input of inputs) {
+                switch (input.type) {
+                    case 'text':
+                    case 'date':
+                        if (!input.value.length) {
+                            input.setCustomValidity('Please Enter ' + input['ariaLabel']);
+                        } else {
+                            input.setCustomValidity('');
+                            console.log(input.value)
+                        }
+                        input.reportValidity();
+                        break;
+                    default:
+                        break;
+                }
+            };
+            // e.preventDefault();
+            if(form.checkValidity()){
+                var data = {};
+                for (var input of inputs) {
+                    data[input.name] = input.value;
+                }
+                localStorage.setItem('form_2_data',JSON.stringify(data));
+                window.location.href = './page3.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Documents</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <form id="form3" class="root" action="javascript:void(0);">
+        <center>
+            <h1>Upload Documents</h1>
+        </center>
+        <div class="input-group">
+            <div>
+                Upload your profile pic<span class="req-star">*</span>
+                <input name="profile_pic" accept="image/*" type='file' id="profimginp" required  />
+            </div>
+            <div>
+                <img id="prev" src="#" alt="your image" style="display:none;" height="200px" width="150px" />
+            </div>
+        </div>
+        <div class="input-group">
+            <div>
+                HSC Marksheet (PDF)<span class="req-star">*</span>
+                <input name="hsc_pdf" accept="application/pdf" type='file' id="hsc_mark" required />
+            </div>
+        </div>
+        <div class="input-group">
+            <div>
+                SSC Marksheet (PDF)<span class="req-star">*</span>
+                <input name="ssc_pdf" accept="application/pdf" type='file' id="ssc_mark" required/>
+            </div>
+        </div>
+        <div class="input-group">
+            <div>
+                All Semester Marksheet (in one PDF)<span class="req-star">*</span>
+                <input name="all_sem_pdf" accept=".pdf" type='file' id="all_semester_mark" required />
+            </div>
+        </div>
+        <center>
+            <Button class="submitBtn" onclick="handleSubmit(this)">Submit</Button>
+        </center>
+    </form>
+    <script>
+        document.getElementById("profimginp").onchange = evt => {
+            const [file] = evt.target.files
+            if (file) {
+                if (file.size < 1048576 * 4) {
+                    document.getElementById("prev").src = URL.createObjectURL(file)
+                    document.getElementById("prev").style.display = 'block';
+                } else {
+                    evt.target.value = ""
+                    alert("File is too large. please select a file less than 4MB");
+                }
+            } else {
+                document.getElementById("prev").src = '#'
+                document.getElementById("prev").style.display = 'none';
+            }
+        }
+
+        document.getElementById("hsc_mark").onchange = evt => {
+            const [file] = evt.target.files
+            if (file) {
+                if (file.size > 1048576 * 4) {
+                    evt.target.value = ""
+                    alert("File is too large. please select a file less than 4MB");
+                }
+            }
+        }
+
+        document.getElementById("ssc_mark").onchange = evt => {
+            const [file] = evt.target.files
+            if (file) {
+                if (file.size > 1048576 * 4) {
+                    evt.target.value = ""
+                    alert("File is too large. please select a file less than 4MB");
+                }
+            }
+        }
+
+        document.getElementById("all_semester_mark").onchange = evt => {
+            const [file] = evt.target.files
+            if (file) {
+                if (file.size > 1048576 * 10) {
+                    evt.target.value = ""
+                    alert("File is too large. please select a file less than 10MB");
+                }
+            }
+        }
+
+        function handleSubmit(e) {
+            var form = document.forms['form3'];
+            var inputs = form.getElementsByTagName('input')
+            for (var input of inputs) {
+                switch (input.type) {
+                    case 'file':
+                        if (!input.files.length) {
+                            input.setCustomValidity('Please select a valid file');
+                        } else {
+                            input.setCustomValidity('');
+                        }
+                        input.reportValidity();
+                        break;
+                    default:
+                        break;
+                }
+            };
+            if (form.checkValidity()) {
+                var data = {};
+                for (var input of inputs) {
+                    data[input.name] = input.value;
+                }
+                localStorage.setItem('form_3_data', JSON.stringify(data));
+                
+                alert("You have successfully registered");
+                window.location.href = './page1.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Details</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <form id="form1" class="root" action="javascript:void(0);" >
+        <center>
+            <h1>Personal Details</h1>
+        </center>
+        <!-- Name Input -->
+        Name<span class="req-star">*</span>
+        <div class="input-group">
+            <input type="text" name="first" placeholder="First" required aria-label="First name">&nbsp;&nbsp;
+            <input type="text" name="last" placeholder="Last" required aria-label="last name">
+        </div>
+        <!-- DOB input -->
+        Date of Birth<span class="req-star">*</span>
+        <div>
+            <input type="date" name="dob"  placeholder="" required aria-label="Date of birth">
+        </div>
+        <!-- Email -->
+        Email<span class="req-star">*</span>
+        <input type="email" placeholder="" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+        <!-- Father's Name -->
+        Father's name<span class="req-star">*</span>
+        <div class="input-group">
+            <input type="text" name="f_first" placeholder="First" aria-label="Father's first name" required>
+            &nbsp;&nbsp;
+            <input type="text" name="f_last" placeholder="Last" required aria-label="Father's last name">
+        </div>
+        <!-- Mother's Name -->
+        Mother's name<span class="req-star">*</span>
+        <div class="input-group">
+            <input type="text" name="m_first" placeholder="First" aria-label="Mother's first name" required>
+            &nbsp;&nbsp;
+            <input type="text" name="m_last" placeholder="Last" aria-label="Mother's last name" required>
+        </div>
+        <!-- Gender -->
+        Gender<span class="req-star">*</span> <br><br>
+        <input type="radio" placeholder="male" name="gender" value="male" style="margin-bottom:10px;" required> &nbsp;&nbsp;M <br>
+        <input type="radio" placeholder="female" name="gender" value="female" required> &nbsp;&nbsp;F <br><br>
+        <!-- Nationality -->
+        Nationality<span class="req-star">*</span>
+        <input type="text" name="nation" placeholder="" aria-label="Nationality" required>
+        <!-- Home Address -->
+        Home Address<span class="req-star">*</span>
+        <input type="text" name="address" placeholder="Street Address" aria-label="Street Address" required>
+        <div class="input-group">
+            <input type="text" name="city" placeholder="City" aria-label="City" required> &nbsp;&nbsp;
+            <input name="country" list="clist" placeholder="Country" aria-label="Country" required>
+            <datalist id="clist">
+                <option>INDIA</option>
+                <option>UAE</option>
+                <option>AFGANSTAN</option>
+                <option>CHINA</option>
+                <option>AMERICA</option>
+                <option>RUSSIA</option>
+                <option>ENGLAND</option>
+                <option>FRANCE</option>
+                <option>SRILANKA</option>
+            </datalist>
+        </div>
+        <!-- Telephone input -->
+        Telephone-Home<span class="req-star">*</span>
+        <input type="tel" name="ph1" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" placeholder="### ### ####" maxLength="12"
+            onkeyup="addHyphen(this)" id="ph1" aria-label="Home telephone number" required>
+        Telephone-Mobile<span class="req-star">*</span>
+        <input type="tel" name="ph2" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" placeholder="### ### ####" maxLength="12"
+            onkeyup="addHyphen(this)" id="ph2" aria-label="mobile number" required>
+        <center>
+            <Button class="submitBtn" value="Next" onclick="handleSubmit(this)">Next</Button>
+        </center>
+    </form>
+    <script>
+        function addHyphen(element) {
+            let ele = document.getElementById(element.id);
+            ele = ele.value.split(' ').join('');
+            let finalVal = ele.replace(/(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)(\d)/, '$1$2$3 $4$5$6 $7$8$9$10')
+            document.getElementById(element.id).value = finalVal;
+        }
+
+        function handleSubmit(e) {
+            var form = document.forms['form1'];
+            var inputs = form.getElementsByTagName('input')
+            for (var input of inputs) {
+                switch (input.type) {
+                    case 'text':
+                    case 'date':
+                        if (!input.value.length) {
+                            input.setCustomValidity('Please Enter ' + input['ariaLabel']);
+                        } else {
+                            input.setCustomValidity('');
+                            console.log(input.value)
+                        }
+                        input.reportValidity();
+                        break;
+                    case 'email':
+                        if (!input.value.length) {
+                            input.setCustomValidity('Email address cann\'t be empty');
+                        }
+                        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input.value)) {
+                            input.setCustomValidity('');
+                            console.log(input.value)
+                        } else {
+                            input.setCustomValidity('Please Enter a valid email');
+                        }
+                        input.reportValidity();
+                        break;
+                    case 'tel':
+                        if (!input.value.length) {
+                            input.setCustomValidity('Telephone number cann\'t be empty');
+                        }
+                        if (input.value && input.value.match(/\d/g).length === 10) {
+                            input.setCustomValidity('');
+                            console.log(input.value)
+                        }
+                        else {
+                            input.setCustomValidity('Telephone number cann\'t be empty');
+                        }
+                        input.reportValidity();
+                        break;
+                    default:
+                        break;
+                }
+            };
+            // e.preventDefault();
+            if(form.checkValidity()){
+                var data = {};
+                for (var input of inputs) {
+                    data[input.name] = input.value;
+                }
+                localStorage.setItem('form_1_data',JSON.stringify(data));
+                window.location.href = './page2.html';
+            }
+            return false;
+        }
+    </script>
+</body>
+
+</html>
